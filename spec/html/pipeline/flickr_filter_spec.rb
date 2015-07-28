@@ -8,27 +8,41 @@ describe HTML::Pipeline::FlickrFilter do
     expect(HTML::Pipeline::Flickr::VERSION).not_to be nil
   end
 
-  context "With no options" do
-    it "generates iframe with default setting" do
+  context "Default context" do
+    it "generates with default options" do
       expect(subject.to_html(flickr_url)).to eq(
-        %(<div class="video youtube"><iframe width="420" height="315" src="//www.youtube.com/embed/Kg4aWWIsszw" frameborder="0" allowfullscreen></iframe></div>)
+        %(<a href="https://www.flickr.com/photos/99434203@N05/9379906996" ><img src="https://farm4.staticflickr.com/3787/9379906996_3ccabd5aae_b.jpg" alt="Ebony&Alex-011-IMGP4840" title="Ebony&Alex-011-IMGP4840" /></a>)
+      )
+    end
+  end
+  context "Multiple source" do
+    it "generates two content" do
+      expect(subject.to_html(flickr_url + " test " + flickr_url)).to eq(
+        %(<a href="https://www.flickr.com/photos/99434203@N05/9379906996" ><img src="https://farm4.staticflickr.com/3787/9379906996_3ccabd5aae_b.jpg" alt="Ebony&Alex-011-IMGP4840" title="Ebony&Alex-011-IMGP4840" /></a> test <a href="https://www.flickr.com/photos/99434203@N05/9379906996" ><img src="https://farm4.staticflickr.com/3787/9379906996_3ccabd5aae_b.jpg" alt="Ebony&Alex-011-IMGP4840" title="Ebony&Alex-011-IMGP4840" /></a>)
       )
     end
   end
 
-  context "With options" do
-    it "generated iframe with custom option" do
+  context "With maxwidth & maxheight options" do
+    it "gets different size of image" do
       result = subject.to_html(
         flickr_url,
-        video_width: 500,
-        video_height: 100,
-        video_frameborder: 5,
-        video_autoplay: true,
-        video_hide_related: true
+        flickr_maxwidth: 100,
+        flickr_maxheight: 200
       )
 
       expect(result).to eq(
-        %(<div class="video youtube"><iframe width="500" height="100" src="//www.youtube.com/embed/Kg4aWWIsszw?autoplay=1&rel=0" frameborder="5" allowfullscreen></iframe></div>)
+        %(<a href="https://www.flickr.com/photos/99434203@N05/9379906996" ><img src="https://farm4.staticflickr.com/3787/9379906996_3ccabd5aae_t.jpg" alt="Ebony&Alex-011-IMGP4840" title="Ebony&Alex-011-IMGP4840" /></a>)
+      )
+    end
+  end
+
+  context "With link_attr option" do
+    it "generates link with attributes" do
+      result = subject.to_html(flickr_url, flickr_link_attr: "target='_blank'")
+
+      expect(result).to eq(
+        %(<a href="https://www.flickr.com/photos/99434203@N05/9379906996" target='_blank'><img src="https://farm4.staticflickr.com/3787/9379906996_3ccabd5aae_b.jpg" alt="Ebony&Alex-011-IMGP4840" title="Ebony&Alex-011-IMGP4840" /></a>)
       )
     end
   end

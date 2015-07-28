@@ -1,6 +1,7 @@
 require 'html/pipeline'
 require 'uri'
 require 'net/http'
+require 'json'
 
 module HTML
   class Pipeline
