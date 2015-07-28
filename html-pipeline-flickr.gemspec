@@ -6,12 +6,12 @@ require 'html/pipeline/flickr/version'
 Gem::Specification.new do |spec|
   spec.name          = "html-pipeline-flickr"
   spec.version       = HTML::Pipeline::Flickr::VERSION
-  spec.authors       = ["Stan Low"]
-  spec.email         = ["a22301613@yahoo.com.tw"]
+  spec.authors       = ["Stan Luo"]
+  spec.email         = ["stan001212@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Flickr filter for html-pipeline}
+  spec.description   = %q{A html-pipeline filter that converts flickr url into a linkable image}
+  spec.homepage      = "https://github.com/st0012/html-pipeline-flickr"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
