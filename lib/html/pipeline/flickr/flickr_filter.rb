@@ -2,6 +2,7 @@ require 'html/pipeline'
 require 'uri'
 require 'net/http'
 require 'json'
+require 'pry'
 
 module HTML
   class Pipeline
@@ -13,24 +14,28 @@ module HTML
 
     class FlickrFilter < TextFilter
       def call
-        regex = %r{https?://(www\.)?flickr\.com/photos/[^\s<]*}
+        regex = %r{(=")*(https?:\/\/(www\.)?flickr\.com\/photos\/[^\s<]*)}
         uri = URI("https://www.flickr.com/services/oembed")
 
         link_attr = context[:flickr_link_attr] || ""
 
         @text.gsub(regex) do |match|
-          params = {
-            url: match,
-            format: :json,
-            maxwidth: max_value(:width),
-            maxheight: max_value(:height)
-          }
+          if $1.nil?
+            params = {
+              url: match,
+              format: :json,
+              maxwidth: max_value(:width),
+              maxheight: max_value(:height)
+            }
 
-          uri.query = URI.encode_www_form(params)
+            uri.query = URI.encode_www_form(params)
 
-          response = JSON.parse(Net::HTTP.get(uri))
+            response = JSON.parse(Net::HTTP.get(uri))
 
-          %{<a href="#{match}" #{link_attr}><img src="#{response["url"]}" alt="#{response["title"]}" title="#{response["title"]}" /></a>}
+            %{<a href="#{match}" #{link_attr}><img src="#{response["url"]}" alt="#{response["title"]}" title="#{response["title"]}" /></a>}
+          else
+            match
+          end
         end
       end
 

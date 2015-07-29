@@ -46,4 +46,17 @@ describe HTML::Pipeline::FlickrFilter do
       )
     end
   end
+
+  context "Url is in links's href" do
+    it "does nothing" do
+      result = subject.to_html(
+        %{<a href="#{flickr_url}"></a>},
+        flickr_link_attr: "target='_blank'"
+      )
+
+      expect(result).to eq(
+        %{<a href="#{flickr_url}"></a>}
+      )
+    end
+  end
 end
