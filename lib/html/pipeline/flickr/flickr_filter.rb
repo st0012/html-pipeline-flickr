@@ -2,7 +2,6 @@ require 'html/pipeline'
 require 'uri'
 require 'net/http'
 require 'json'
-require 'pry'
 
 module HTML
   class Pipeline
